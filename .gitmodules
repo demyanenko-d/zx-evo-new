@@ -1,0 +1,9 @@
+[submodule "tools"]
+	path = tools
+	url = https://github.com/tslabs/zx-evo-tools.git
+[submodule "docs"]
+	path = docs
+	url = https://github.com/tslabs/zx-evo-docs.git
+[submodule "unreal"]
+	path = unreal
+	url = https://github.com/tslabs/zx-evo-unreal.git
