@@ -617,28 +617,22 @@ module zports
   wire comport_rd   = ((loa == COMPORT) && port_rd);
 
   // write to wait registers
-  always @(posedge zclk)
-  begin
-    // gluclocks
-    if (gluclock_on && portf7_wr)
-    begin
-      if (!a[14]) // $BFF7 - data reg
-        wait_write <= din;
+ always @(posedge zclk)
+begin
+  // wait_write
+  if (gluclock_on && portf7_wr && !a[14]) // $BFF7 - data reg
+    wait_write <= din;
+  else if (comport_wr) // $xxEF
+    wait_write <= din;
 
-      if (!a[13]) // $DFF7 - addr reg
-        wait_addr <= din;
-    end
-
-    // com ports
-    if (comport_wr) // $xxEF
-      wait_write <= din;
-
-    if (comport_wr || comport_rd)
-      wait_addr <= a[15:8];
-
-    if ((loa==PORTXT) && (hoa == DMAWPA))
-      wait_addr <= din;
-  end
+  // wait_addr  
+  if (gluclock_on && portf7_wr && !a[13]) // $DFF7 - addr reg
+    wait_addr <= din;
+  else if (comport_wr || comport_rd)
+    wait_addr <= a[15:8];
+  else if ((loa==PORTXT) && (hoa == DMAWPA))
+    wait_addr <= din;
+end
 
   // wait from wait registers
   assign wait_start_gluclock = (gluclock_on && !a[14] && (portf7_rd || portf7_wr)); // $BFF7 - gluclock r/w

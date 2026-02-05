@@ -350,7 +350,11 @@ set_instance_assignment -name CLOCK_SETTINGS "SPI clock" -to spick
 set_instance_assignment -name CUT ON -from clkz_in -to fclk
 set_instance_assignment -name CUT ON -from "zclock:zclock|zclk_out" -to clkz_out
 set_instance_assignment -name CUT ON -from "zsignals:zsignals|mreq_r" -to "dram:dram|int_addr"
-set_instance_assignment -name CUT ON -from "zmem:z80mem|zd_out" -to d
+set_instance_assignment -name CUT ON -from "zmem:zmem|zd_out" -to d
+set_instance_assignment -name MULTICYCLE 2 -from "zports:zports|memconf*" -to *
+set_instance_assignment -name MULTICYCLE 2 -from "zports:zports|rampage*" -to *
+set_instance_assignment -name MULTICYCLE 2 -from "zmem:zmem|vdos_r" -to *
+set_instance_assignment -name MULTICYCLE 2 -from "zmem:zmem|pre_vdos" -to *
 
 	# Fitter Assignments
 	# ==================

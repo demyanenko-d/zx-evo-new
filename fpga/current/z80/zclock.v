@@ -130,11 +130,10 @@ module zclock
   // Z80 clocking
   always @(negedge clk)
   begin
-    if (zpos)
-      zclk_out <= 1'b0;
-
     if (zneg)
       zclk_out <= 1'b1;
+    else if (zpos)
+      zclk_out <= 1'b0;
   end
 
 endmodule

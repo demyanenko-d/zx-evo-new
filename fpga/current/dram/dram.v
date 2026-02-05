@@ -85,7 +85,7 @@ module dram
         rras1_n <= ~int_addr[0];
       end
 
-    if (c1)
+    else if (c1)
       if (idle)
       begin
         rras0_n <=  rfsh_alt;
@@ -98,7 +98,7 @@ module dram
         rucas_n <= write ? ~int_bsel[1] : 1'b0;
       end
 
-    if (c2)
+    else if (c2)
       if (idle)
       begin
         rlcas_n <= 1'b1;
@@ -110,7 +110,7 @@ module dram
         rras1_n <= 1'b1;
       end
 
-    if (c3)
+    else if (c3)
     begin
       rras0_n <= 1'b1;
       rras1_n <= 1'b1;

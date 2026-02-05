@@ -80,17 +80,17 @@ module video_ports
       vint_inc <= 4'b0;
     end
     else if (vint_begl_wr)
-      vint_beg[7:0] <= d;
+        vint_beg[7:0] <= d;
 
     else if (vint_begh_wr)
-    begin
-      vint_beg[8] <= d[0];
-      vint_inc <= d[7:4];
-    end
+      begin
+        vint_beg[8] <= d[0];
+        vint_inc <= d[7:4];
+      end
 
     else if (int_start)
-      vint_beg <= vint_beg_next;
-
+        vint_beg <= vint_beg_next;
+    
   always @(posedge clk or posedge res)
     if (res)
     begin
@@ -105,8 +105,9 @@ module video_ports
 
     else
     begin
-      if (zborder_wr  )   border          <= {palsel[3:0], 1'b0, d[2:0]};
-      if (border_wr   )   border          <= d;
+      if (border_wr)      border          <= d;
+      else if(zborder_wr) border          <= {palsel[3:0], 1'b0, d[2:0]};
+      
       if (gy_offsl_wr )   gy_offs[7:0]    <= d;
       if (gy_offsh_wr )   gy_offs[8]      <= d[0];
       if (t0y_offsl_wr)   t0y_offs[7:0]   <= d;
@@ -118,8 +119,9 @@ module video_ports
       if (sgpage_wr   )   sgpage          <= d;
       if (hint_beg_wr )   hint_beg        <= d;
 
-      if (zvpage_wr   )   vpage_r         <= {6'b000001, d[3], 1'b1};
-      if (vpage_wr    )   vpage_r         <= d;
+      if (vpage_wr)       vpage_r         <= d;
+      else if(zvpage_wr)  vpage_r         <= {6'b000001, d[3], 1'b1};
+       
       if (vconf_wr    )   vconf_r         <= d;
       if (gx_offsl_wr )   gx_offs_r[7:0]  <= d;
       if (gx_offsh_wr )   gx_offs_r[8]    <= d[0];
@@ -132,10 +134,10 @@ module video_ports
       if (t1gpage_wr  )   t1gpage_r       <= d;
     end
 
-  // latching regs at line start, delaying hires for 1 line
-  always @(posedge clk or posedge res)
-  if (res)
-  begin
+// latching regs at line start, delaying hires for 1 line
+always @(posedge clk or posedge res)
+if (res)
+begin
     vpage       <= 8'h05;
 `ifdef FORCE_TEXT_MODE
     vconf       <= 8'h83;
@@ -144,7 +146,7 @@ module video_ports
 `endif
     gx_offs     <= 9'b0;
     palsel      <= 8'h0F;
-  end
+end
 
   else if (zvpage_wr)
     vpage <= {6'b000001, d[3], 1'b1};
@@ -161,6 +163,6 @@ module video_ports
     t1x_offs <= t1x_offs_r;
     t0gpage <= t0gpage_r;
     t1gpage <= t1gpage_r;
-  end
+end
 
  endmodule

@@ -231,19 +231,16 @@ module dma
     begin
       if (dram_next)
         data <= (dv_blt && phase_blt) ? blt_rddata : dram_rddata;
-
-      if (ide_int_stb)
+      else if (ide_int_stb)
         data <= ide_in;
-
-      if (spi_int_stb)
+      else if (spi_int_stb)
       begin
         if (bsel)
           data[15:8] <= spi_rddata;
         else
           data[7:0] <= spi_rddata;
       end
-
-      if (wtp_int_stb)
+      else if (wtp_int_stb)
       begin
         if (bsel)
           data[15:8] <= wtp_rddata;
@@ -252,7 +249,7 @@ module dma
       end
 
 `ifdef FDR
-      if (fdr_int_stb)
+      else if (fdr_int_stb)
       begin
         if (bsel)
           data[15:8] <= fdr_in;
