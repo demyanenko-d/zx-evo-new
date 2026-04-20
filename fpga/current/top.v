@@ -1089,7 +1089,6 @@ module top
 `else
     .sdi(sddi),
 `endif
-    .mode(spi_mode),
     .dma_req(dma_spi_req),
     .dma_din(dma_spi_din),
     .cpu_req(cpu_spi_req),
